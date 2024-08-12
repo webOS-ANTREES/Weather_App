@@ -65,7 +65,7 @@ const MainPanel = () => {
 
     const fetchDetailedWeather = async (city) => {
         const { nx, ny } = cities[city];
-        const response = await fetch(`http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&numOfRows=1000&pageNo=1&base_date=${getPreviousDate()}&base_time=0200&dataType=JSON&nx=${nx}&ny=${ny}`);
+        const response = await fetch(`http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&numOfRows=1000&pageNo=1&base_date=${getPreviousDate()}&base_time=2300&dataType=JSON&nx=${nx}&ny=${ny}`);
         const data = await response.json();
 
         if (data.response.header.resultCode === '00') {
