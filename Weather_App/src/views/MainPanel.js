@@ -65,7 +65,7 @@ const MainPanel = () => {
 
     const fetchDetailedWeather = async (city) => {
         const { nx, ny } = cities[city];
-        const response = await fetch(`http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&numOfRows=1000&pageNo=1&base_date=${getCurrentDate()}&base_time=0200&dataType=JSON&nx=${nx}&ny=${ny}`);
+        const response = await fetch(`http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&numOfRows=1000&pageNo=1&base_date=${getPreviousDate()}&base_time=0200&dataType=JSON&nx=${nx}&ny=${ny}`);
         const data = await response.json();
 
         if (data.response.header.resultCode === '00') {
@@ -128,6 +128,14 @@ const MainPanel = () => {
         else return "50.0mm 이상";
     };
 
+    const getPreviousDate = () => {
+        const date = new Date();
+        date.setDate(date.getDate() - 1); // 어제 날짜로 설정
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}${month}${day}`;
+    };
 
     const getCurrentDate = () => {
         const date = new Date();
@@ -136,6 +144,7 @@ const MainPanel = () => {
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}${month}${day}`;
     };
+    
     const getTomorrowDate = () => {
         const date = new Date();
         date.setDate(date.getDate() + 1);
@@ -231,17 +240,20 @@ const MainPanel = () => {
                                 time: item.time.substring(0, 2) + '시',
                                 온도: item.temperature
                             }))}
-                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" /> {/* 격자선을 점선으로 표시 */}
                             <XAxis
                                 dataKey="time"
                                 ticks={['00시', '06시', '12시', '18시']} // X축 시간대를 설정
+                                tick={{ fontSize: 20, textAnchor: 'front' }} 
                             />
                             <YAxis
                                 stroke="#000000" // Y축 글자 색상을 검은색으로 설정
                                 domain={[18, 40]} // Y축 범위를 18도부터 40도까지로 설정
                                 ticks={[18, 24, 30, 36, 40]} // 18, 24, 30, 36, 40에 격자선 추가
+                                tick={{ fontSize: 22 }} 
+                                interval={0}
                             />
                             <Tooltip />
                             <Legend />
@@ -264,17 +276,20 @@ const MainPanel = () => {
                                 time: item.time.substring(0, 2) + '시',
                                 습도: item.humidity
                             }))}
-                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" /> {/* 격자선을 점선으로 표시 */}
                             <XAxis
                                 dataKey="time"
                                 ticks={['00시', '06시', '12시', '18시']} // X축 시간대를 설정
+                                tick={{ fontSize: 20, textAnchor: 'front' }} 
                             />
                             <YAxis
                                 stroke="#000000" // Y축 글자 색상을 검은색으로 설정
                                 domain={[0, 100]} // Y축 범위를 0부터 100까지 설정
                                 ticks={[0, 25, 50, 75, 100]} // 0, 25, 50, 75, 100에 격자선 추가
+                                tick={{ fontSize: 22 }} 
+                                interval={0}
                             />
                             <Tooltip />
                             <Legend />
